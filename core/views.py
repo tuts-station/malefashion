@@ -8,11 +8,13 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import login as auth_login,logout,authenticate,get_user_model
+from django.contrib.auth import login, logout,authenticate,get_user_model
+from django.contrib.auth import login as auth_login
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import RegisterForm, LoginForm
 from django.views import View
+from .models import Slider 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView,TemplateView
 
@@ -20,7 +22,8 @@ from django.views.generic import RedirectView,TemplateView
 
 class ProductView(View):
     def get(self, request):
-        return render(request, 'core/home.html')
+        sliders = Slider.objects.all()
+        return render(request, 'core/home.html',{ 'sliders': sliders })
 
 def about(request):
     return render(request, 'core/about.html')    
@@ -36,6 +39,9 @@ def cart(request):
 
 def checkout(request):
     return render(request, 'core/checkout.html')
+
+def productDetails(request):
+    return render(request, 'core/proDetails.html')
 
 # def signup(request):
 #     return render(request, 'core/signup.html')
@@ -59,12 +65,12 @@ class RegisterView(View):
             form.save()
 
             email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+
+            user = authenticate(email=email, password=raw_password)
+
             messages.success(request, 'User created Successfully!')
-            new_user = authenticate(email=form.cleaned_data['email'],
-                                    password=form.cleaned_data['password1'],
-                                    )
-            auth_login(request, new_user)
-            return redirect('')
+            return redirect('login')
         else:
             messages.warning(request, 'Oops! something went wrong!')
 
@@ -77,11 +83,10 @@ def login(request):
         if request.method == "POST":
 
             if form.is_valid():
-                user = authenticate(email=request.POST.get("email"), password=request.POST.get("password1"))
-                print(user)
+                user = authenticate(username=request.POST.get("username"), password=request.POST.get("password"))
                 if user is not None:
-                    login(request, user)
-                    return redirect('')
+                    auth_login(request, user)
+                    return redirect('home')
                 else:
                     messages.warning(request, 'Invalid credentials!')
             else:

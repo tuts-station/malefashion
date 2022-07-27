@@ -30,13 +30,13 @@ class RegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(
+    username = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Email",
+                "placeholder": "Username",
             }
-        ),error_messages={'required': 'The Email is required.'})
-    password1 = forms.CharField(
+        ),error_messages={'required': 'The Username is required.'})
+    password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "Password",
