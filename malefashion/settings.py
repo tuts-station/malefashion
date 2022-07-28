@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    'fashion',
     'adminlte3',
     'adminlte3_theme',
 ]
@@ -135,3 +135,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGOUT_REDIRECT_URL = '/'
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'bhaveshs.aatmaninfo@gmail.com'
+EMAIL_HOST_PASSWORD = 'tbeotvtwskesciui'
