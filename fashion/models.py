@@ -9,6 +9,7 @@ class Slider(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
 class Catagory(models.Model):
     name = models.CharField(max_length=150,null=False,blank=False)
     description = models.TextField(max_length=500,null=False,blank=False)
@@ -25,8 +26,14 @@ LABEL = (
     ('Sale', 'Sale'),
 )
 
+# class Brand(models.Model):
+#     name = models.CharField(max_length=255)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
 class Product(models.Model):
     category = models.ForeignKey(Catagory,on_delete=models.CASCADE)
+    # brand = models.OneToOneField(Brand,on_delete=models.CASCADE)
     label = models.CharField(choices=LABEL, max_length=150)
     name = models.CharField(max_length=150,null=False,blank=False)
     product_image = models.ImageField(upload_to='productImages/',null=True,blank=True)

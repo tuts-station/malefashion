@@ -15,6 +15,11 @@ class CatagoryAdmin(admin.ModelAdmin):
     model = Catagory
     list_display = ['name','description','status','created_at', ]
 
+# class BrandAdmin(admin.ModelAdmin):
+#     model = Brand
+#     list_display = ['name','created_at', ]
+
 admin.site.register(Slider,SliderAdmin)
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Catagory,CatagoryAdmin)
+# admin.site.register(Brand,BrandAdmin)

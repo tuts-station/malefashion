@@ -42,8 +42,18 @@ def cart(request):
 def checkout(request):
     return render(request, 'fashion/checkout.html')
 
-def productDetails(request):
-    return render(request, 'fashion/proDetails.html')
+class productDetails(View):
+    def get(self, request, pk):
+        totalitem = 0
+        product = Product.objects.get(pk=pk)
+        print(product.product_image)
+        item_already_in_cart=False
+        # if request.user.is_authenticated:
+        #     totalitem = len(Cart.objects.filter(user=request.user))
+        #     item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
+        return render(request, 'fashion/proDetails.html', {'product':product})
+# def productDetails(request):
+#     return render(request, 'fashion/proDetails.html')
 
 def userProfile(request):
     return render(request, 'fashion/userProfile.html')

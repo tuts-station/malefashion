@@ -17,7 +17,8 @@ urlpatterns = [
     re_path(r'^checkout/$', views.checkout, name='checkout'),
     re_path(r'^signup/$', RegisterView.as_view(), name='signup'),
     re_path(r'^login/$', views.login, name='login'),
-    re_path(r'^product-details/$', views.productDetails, name='productDetails'),
+    # re_path(r'^product-details/<int:pk>/$', views.productDetails.as_view(), name='productDetails'),
+    path('product-details/<int:pk>/', views.productDetails.as_view(), name='productDetails'),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("profile/", views.userProfile, name="userProfile"),
 
