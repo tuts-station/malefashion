@@ -10,6 +10,10 @@
     color: #111111 !important;
     text-decoration: none !important;
 }
+.add-to-cart{
+    color: #fff !important;
+    text-decoration: none !important;
+}
 .forgot-link:hover{
     color: none !important;
 }

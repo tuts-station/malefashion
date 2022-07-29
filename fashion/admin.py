@@ -9,17 +9,17 @@ class SliderAdmin(admin.ModelAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     model = Product
-    list_display = ['category', 'name','label', 'product_image', 'quantity', 'original_price', 'description', 'status', 'trending', ]
+    list_display = ['category','brand', 'name','label', 'product_image', 'quantity', 'original_price', 'description', 'status', 'trending', ]
 
 class CatagoryAdmin(admin.ModelAdmin):
     model = Catagory
     list_display = ['name','description','status','created_at', ]
 
-# class BrandAdmin(admin.ModelAdmin):
-#     model = Brand
-#     list_display = ['name','created_at', ]
+class BrandAdmin(admin.ModelAdmin):
+    model = Brand
+    list_display = ['name','created_at', ]
 
 admin.site.register(Slider,SliderAdmin)
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Catagory,CatagoryAdmin)
-# admin.site.register(Brand,BrandAdmin)
+admin.site.register(Brand,BrandAdmin)
