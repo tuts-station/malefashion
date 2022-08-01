@@ -10,8 +10,8 @@
                     <div class="breadcrumb__text">
                         <h4>Shopping Cart</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
+                            <a href="{% url 'home' %}">Home</a>
+                            <a href="{% url 'shop' %}">Shop</a>
                             <span>Shopping Cart</span>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="shopping__cart__table">
-                        <table>
+                        <table class="cart-table">
                             <thead>
                                 <tr>
                                     <th>Product</th>
@@ -37,116 +37,65 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="{% static 'fashion/img/shopping-cart/cart-1.jpg' %}" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>T-shirt Contrast Pocket</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 30.00</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="{% static 'fashion/img/shopping-cart/cart-2.jpg' %}" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Diagonal Textured Cap</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 32.50</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="{% static 'fashion/img/shopping-cart/cart-3.jpg' %}" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Basic Flowing Scarf</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 47.00</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="{% static 'fashion/img/shopping-cart/cart-4.jpg' %}" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Basic Flowing Scarf</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 30.00</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
+                                {% if carts %}
+                                    {% for cart in carts %}
+                                        <tr class="main-tr">
+                                            <td class="product__cart__item">
+                                                <div class="product__cart__item__pic">
+                                                    <img src="{{ cart.product.product_image.url }}" alt="{{ cart.product.product_image.url }}" height="90" width="90">
+                                                </div>
+                                                <div class="product__cart__item__text">
+                                                    <h6>{{ cart.product.name }}</h6>
+                                                    <h5>${{ cart.product.discounted_price }}</h5>
+                                                </div>
+                                            </td>
+                                            <td class="quantity__item">
+                                                <div class="quantity">
+                                                    <div class="pro-qty-2">
+                                                        <a class="forgot-link minus-cart" pid="{{cart.product.id}}"><i class="fa fa-angle-left dec"></i></a>
+                                                        <input type="text" class="quantity-val" value="{{cart.quantity}}">
+                                                        <a class="forgot-link plus-cart" pid="{{cart.product.id}}"><i class="fa fa-angle-right inc"></i></a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="cart__price">${{ cart.product.discounted_price }}</td>
+                                            <td class="cart__close"><a class="remove-cart" pid={{cart.product.id}}><i class="fa fa-close"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                       <td colspan="3">There are no product!</td>     
+                                    </tr>
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                                <a href='{% url "home" %}'>Continue Shopping</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="cart__discount">
+                    <!-- <div class="cart__discount">
                         <h6>Discount codes</h6>
                         <form action="#">
                             <input type="text" placeholder="Coupon code">
                             <button type="submit">Apply</button>
                         </form>
-                    </div>
+                    </div> -->
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span>$ 169.50</span></li>
-                            <li>Total <span>$ 169.50</span></li>
+                            <li>Subtotal <span id="amount">$ {{amount|floatformat:2}}</span></li>
+                            <li class="shipping">Shipping <span>$ 70.00</span></li>
+
+                            <hr>
+                            <li>Total <span id="totalamount">$ {{totalamount|floatformat:2}}</span></li>
                         </ul>
+                        <hr>
                         <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
                     </div>
                 </div>

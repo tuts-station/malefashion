@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fashion',
     'adminlte3',
+    'django_summernote',
     'adminlte3_theme',
 ]
 
@@ -142,3 +143,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'bhaveshs.aatmaninfo@gmail.com'
 EMAIL_HOST_PASSWORD = 'tbeotvtwskesciui'
+
+SUMMERNOTE_THEME = 'bs4'
+LOGIN_URL = '/login'
+# LOGOUT_URL = '/'

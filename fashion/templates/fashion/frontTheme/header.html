@@ -62,8 +62,8 @@
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="{% static 'fashion/img/icon/search.png' %}" alt=""></a>
                     <a href="#"><img src="{% static 'fashion/img/icon/heart.png' %}" alt=""></a>
-                    <a href="{% url 'cart' %}"><img src="{% static 'fashion/img/icon/cart.png' %}" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
+                    <a href="{% url 'cart' %}"><img src="{% static 'fashion/img/icon/cart.png' %}" alt=""> <span>{{ totalitem }}</span></a>
+                    <div class="price">${{ totalamount }}</div>
                 </div>
             </div>
         </div>

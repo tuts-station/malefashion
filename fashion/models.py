@@ -43,7 +43,9 @@ class Product(models.Model):
     product_image = models.ImageField(upload_to='productImages/',null=True,blank=True)
     quantity = models.IntegerField(null=False,blank=False)
     original_price = models.FloatField(null=False,blank=False)
-    description = models.TextField(max_length=500,null=False,blank=False)
+    discounted_price = models.FloatField(null=False,blank=False,default='100.00')
+    desc = models.TextField(max_length=500,null=False,blank=False)
+    long_desc = models.TextField(null=False,blank=False,default='')
     status = models.BooleanField(default=False,help_text="0-show,1-Hidden")
     trending = models.BooleanField(default=False,help_text="0-default,1-Trending")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -65,3 +67,6 @@ class Cart(models.Model):
     def total_cost(self):
         return self.quantity * self.product.original_price
 
+class FavouriteProduct(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)

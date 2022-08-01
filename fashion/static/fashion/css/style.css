@@ -93,7 +93,7 @@ textarea:focus {
 	outline: none;
 }
 
-
+a:hover,
 a:focus {
 	text-decoration: none;
 	outline: none;
@@ -3849,3 +3849,9 @@ ol {
 		height: 250px;
 	}
 }
+/*.qtybtn:before{
+    display: none !important;
+}
+.qtybtn:before{
+    display: none !important;
+}*/
