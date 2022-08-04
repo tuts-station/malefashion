@@ -12,9 +12,9 @@ from django.contrib.auth import login, logout,authenticate,get_user_model
 from django.contrib.auth import login as auth_login
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.hashers import make_password, check_password
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, CustomerProfileForm
 from django.views import View
-from .models import Slider, Product,Catagory, Cart, FavouriteProduct
+from .models import Slider, Product,Catagory, Cart, FavouriteProduct, Customer
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView,TemplateView
@@ -35,15 +35,6 @@ def shop(request):
     shipping_amount = 70.0
     totalamount = 0
     products = Product.objects.all()
-
-    # Favourites,_ = FavouriteProduct.objects.get_or_create(user=request.user)
-
-    # product_in_favorites = None
-    # if products in Favourites.product.all():
-    #     product_in_favorites = True
-    # else:
-    #     product_in_favorites = False
-
     catagories = Catagory.objects.all()
     cart_product = [p for p in Cart.objects.all() if p.user == request.user]
     if cart_product:
@@ -56,7 +47,6 @@ def shop(request):
 def contact(request):
     return render(request, 'fashion/contact.html')
 
-# @login_required()
 def add_to_cart(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -71,7 +61,6 @@ def add_to_cart(request):
     else:
         return redirect('/cart')
 
-# @login_required
 def cart(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -86,7 +75,6 @@ def cart(request):
         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
         if cart_product:
             for p in cart_product:
-                # print(p.product.discounted_price)
                 tempamount = (p.quantity * p.product.discounted_price)
                 amount += tempamount
             totalamount = amount+shipping_amount
@@ -127,12 +115,7 @@ def plus_cart(request):
         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
         for p in cart_product:
             tempamount = (p.quantity * p.product.discounted_price)
-            # print("Quantity", p.quantity)
-            # print("Selling Price", p.product.discounted_price)
-            # print("Before", amount)
             amount += tempamount
-            # print("After", amount)
-        # print("Total", amount)
         data = {
             'quantity':c.quantity,
             'amount':amount,
@@ -153,12 +136,7 @@ def minus_cart(request):
         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
         for p in cart_product:
             tempamount = (p.quantity * p.product.discounted_price)
-            # print("Quantity", p.quantity)
-            # print("Selling Price", p.product.discounted_price)
-            # print("Before", amount)
             amount += tempamount
-            # print("After", amount)
-        # print("Total", amount)
         data = {
             'quantity':c.quantity,
             'amount':amount,
@@ -177,7 +155,6 @@ def Favorites(request, id):
 
     product = Product.objects.get(id=id)
 
-    print('if')
     if product not in Favourites.product.all():
         Favourites.product.add(product)
         data = {
@@ -185,11 +162,9 @@ def Favorites(request, id):
         }
         return JsonResponse(data)
     else:
-        print('else')
         Favourites.product.remove(product)
     
     Favourites.save()
-    # messages.success(request, 'Product Add to Favourite Successfully!')
     return HttpResponse('Success')
 
 def favoritesPage(request):
@@ -197,17 +172,33 @@ def favoritesPage(request):
         return redirect('login')
     user = request.user
     FavProducts,_ = FavouriteProduct.objects.get_or_create(user=user)
-    # print(FavProducts.product.all())
     return render(request, 'fashion/favourites.html', { 'product_list': FavProducts.product.all(), "favorites": True})
 
 def checkout(request):
-    return render(request, 'fashion/checkout.html')
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    user = request.user
+    add = Customer.objects.filter(user=user)
+    cart_items = Cart.objects.filter(user=request.user)
+    amount = 0.0
+    shipping_amount = 70.0
+    totalamount=0.0
+    cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+    if cart_product:
+        for p in cart_product:
+            tempamount = (p.quantity * p.product.discounted_price)
+            amount += tempamount
+        totalamount = amount+shipping_amount
+    return render(request, 'fashion/checkout.html', {'add':add, 'cart_items':cart_items, 'totalcost':totalamount})
 
 class productDetails(View):
     def get(self, request, pk):
         totalitem = 0
         product = Product.objects.get(pk=pk)
 
+        # if not request.user.is_authenticated:
+        #     return redirect('login')
         Favourites,_ = FavouriteProduct.objects.get_or_create(user=request.user)
 
         product_in_favorites = None
@@ -221,10 +212,32 @@ class productDetails(View):
         if request.user.is_authenticated:
             totalitem = len(Cart.objects.filter(user=request.user))
             item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
-        return render(request, 'fashion/proDetails.html', {'product':product,'totalitem':totalitem,'product_in_favorites':product_in_favorites})
+        return render(request, 'fashion/proDetails.html', {'product':product,'totalitem':totalitem,'product_in_favorites':product_in_favorites,'item_already_in_cart':item_already_in_cart})
 
-def userProfile(request):
-    return render(request, 'fashion/userProfile.html')
+class CustomerView(View):
+    def get(self, request):
+        form = CustomerProfileForm()
+        return render(request, 'fashion/userProfile.html', {'form':form,'active':'active'})
+  
+    def post(self, request):
+        form = CustomerProfileForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            if profile.user_id is None:
+                profile.user_id = request.user.id
+            profile.save()
+            messages.success(request, 'Congratulations!! Registered Successfully.')
+        return render(request, 'fashion/userProfile.html', {'form':form})
+
+def address(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    totalitem = 0
+    if request.user.is_authenticated:
+        totalitem = len(Cart.objects.filter(user=request.user))
+    add = Customer.objects.filter(user=request.user)
+    return render(request, 'fashion/address.html',{'add':add,'active':'active'})
 
 class RegisterView(View):
     form_class = RegisterForm

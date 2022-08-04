@@ -60,6 +60,64 @@ class MyPasswordChangeForm(PasswordChangeForm):
 
 
 class CustomerProfileForm(forms.ModelForm):
-    class Meta:
-        model = Customer
-        fields = ['first_name','last_name','country','address','city', 'zipcode', 'state', 'email', 'phone']
+        first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "First Name",
+            }
+        ),error_messages={'required': 'The First Name is required.'})
+
+        last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Last Name",
+            }
+        ),error_messages={'required': 'The Last Name is required.'})
+
+        country = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Country",
+            }
+        ),error_messages={'required': 'The Country is required.'})
+
+        address = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Street Address",
+            }
+        ),error_messages={'required': 'The Street Address is required.'})
+
+        city = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "City",
+            }
+        ),error_messages={'required': 'The City is required.'})
+
+        zipcode = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Zipcode",
+            }
+        ),error_messages={'required': 'The Zipcode is required.'})
+
+        state = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "State",
+            }
+        ),error_messages={'required': 'The State is required.'})
+
+        phone = forms.IntegerField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Phone",
+            }
+        ),error_messages={'required': 'The Phone is required.'})
+
+        email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder':'Email','autocomplete': 'email'}),error_messages={'required': 'The Email is required.'})
+
+        class Meta:
+            model = Customer
+            fields = ['first_name', 'last_name', 'country', 'address', 'city', 'zipcode', 'state', 'phone','email']

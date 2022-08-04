@@ -29,3 +29,10 @@
 .fill-color{
     color: red !important;
 }
+.add-favourite{
+    cursor: pointer !important;
+}
+.nav-pills .nav-link.active{
+    background-color: #111111 !important;
+    color: white !important;
+}

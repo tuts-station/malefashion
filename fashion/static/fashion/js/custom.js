@@ -61,7 +61,7 @@ $('body').on('click','.add-favourite',function (argument) {
         url: `/product/${id}/favourites`,
         success: function (data) {
             if (data.product == true) {
-                obj.html('<i class="fa fa-heart"></i> Delete From Favourite');
+                obj.html('<i class="fa fa-heart fill-color"></i> Delete From Favourite');
                 toastr.success('Product Add to Favourite Successfully!')
             }else{
                 obj.html('<i class="fa fa-heart"></i> Add to Favourite');
@@ -78,14 +78,13 @@ $('body').on('click','.shop-add-to-fav',function (argument) {
         type: "GET",
         url: `/product/${id}/favourites`,
         success: function (data) {
-            console.log(data);
-            // if (data.product == true) {
-            //     obj.html('<i class="fa fa-heart fill-color"></i>');
-            //     toastr.success('Product Add to Favourite Successfully!')
-            // }else{
-            //     obj.html('<i class="fa fa-heart"></i>');
-            //     toastr.success('Product Delete From Favourite Successfully!')
-            // }
+            if (data.product == true) {
+                obj.html('<i class="fa fa-heart fill-color"></i>');
+                toastr.success('Product Add to Favourite Successfully!')
+            }else{
+                obj.html('<i class="fa fa-heart"></i>');
+                toastr.success('Product Delete From Favourite Successfully!')
+            }
         },
     });
 })

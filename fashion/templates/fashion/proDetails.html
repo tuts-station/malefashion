@@ -94,7 +94,7 @@
                             <div class="product__details__cart__option">
                                 {% if user.is_authenticated  %}
                                     {% if item_already_in_cart  %}
-                                     <a href="{% url 'showcart' %}" class="primary-btn add-to-cart">Go to Cart</a>
+                                     <a href="{% url 'cart' %}" class="primary-btn add-to-cart">Go to Cart</a>
                                     {% else %}
                                      <form action="{% url 'add-to-cart' %}" class="d-inline">
                                       <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">
@@ -112,9 +112,9 @@
                             </div>
                             <div class="product__details__btns__option">
                                   {% if not product_in_favorites %}
-                                    <a data-id="{{ product.id }}" class="add-favourite"><i class="fa fa-heart"></i> add to wishlist</a>
+                                    <a data-id="{{ product.id }}" class="add-favourite"><i class="fa fa-heart"></i> Add to Favourite</a>
                                   {% else %}
-                                    <a data-id="{{ product.id }}" class="add-favourite"><i class="fa fa-heart"></i> Delete from Favourites</a>
+                                    <a data-id="{{ product.id }}" class="add-favourite"><i class="fa fa-heart fill-color"></i> Delete from Favourites</a>
                                   {% endif %}
                             </div>
                             <div class="product__details__last__option">
