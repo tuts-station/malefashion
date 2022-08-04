@@ -9,7 +9,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Male-Fashion{% endblock %}</title>
-
+    <script type="text/javascript">
+    {% if messages %}
+        document.addEventListener("DOMContentLoaded", function(event) {
+            toastr.options = { "closeButton": true, "debug": false, "newestOnTop": true,
+                "progressBar": true, "positionClass": "toast-top-right", "preventDuplicates": true,
+                "onclick": null, "showDuration": "300", "hideDuration": "1000", "timeOut": "5000",
+                "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear",
+                "showMethod": "fadeIn", "hideMethod": "fadeOut" };
+            {% autoescape off %}
+                {% for msg in messages %}
+                    toastr.{{ msg.level_tag }}("{{ msg }}");
+                {% endfor %}
+            {% endautoescape %}
+        });
+    {% endif %}
+    </script>
     {% block style %}
     {% include "fashion/frontTheme/style.html" %}
     {% endblock %}

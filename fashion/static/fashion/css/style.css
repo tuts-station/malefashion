@@ -942,7 +942,7 @@ ol {
 
 .product__item.sale .product__item__pic .label {
 	color: #ffffff;
-	background: #111111;
+	background: #111111 !important;
 }
 
 .product__item.sale .product__item__text .rating i {
@@ -968,9 +968,9 @@ ol {
 	opacity: 0;
 }*/
 
-/*.product__item:hover .product__item__text .product__color__select {
+.product__item:hover .product__item__text .product__color__select {
 	opacity: 1;
-}*/
+}
 
 .product__item__pic {
 	height: 260px;

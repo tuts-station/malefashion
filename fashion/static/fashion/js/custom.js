@@ -54,14 +54,38 @@ $('.remove-cart').click(function () {
 });
 
 $('body').on('click','.add-favourite',function (argument) {
+    var obj = $(this);
     id = $(this).data("id");
-    // var img2 = $('.white-heart').data("img");
-    // $('.white-heart').attr("src", img2);
     $.ajax({
         type: "GET",
         url: `/product/${id}/favourites`,
         success: function (data) {
-            console.log("Success");
+            if (data.product == true) {
+                obj.html('<i class="fa fa-heart"></i> Delete From Favourite');
+                toastr.success('Product Add to Favourite Successfully!')
+            }else{
+                obj.html('<i class="fa fa-heart"></i> Add to Favourite');
+                toastr.success('Product Delete From Favourite Successfully!')
+            }
+        },
+    });
+})
+
+$('body').on('click','.shop-add-to-fav',function (argument) {
+    var obj = $(this);
+    id = $(this).data("id");
+    $.ajax({
+        type: "GET",
+        url: `/product/${id}/favourites`,
+        success: function (data) {
+            console.log(data);
+            // if (data.product == true) {
+            //     obj.html('<i class="fa fa-heart fill-color"></i>');
+            //     toastr.success('Product Add to Favourite Successfully!')
+            // }else{
+            //     obj.html('<i class="fa fa-heart"></i>');
+            //     toastr.success('Product Delete From Favourite Successfully!')
+            // }
         },
     });
 })

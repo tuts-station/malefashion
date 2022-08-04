@@ -111,7 +111,11 @@
                                    {% endif %}
                             </div>
                             <div class="product__details__btns__option">
-                                <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                                  {% if not product_in_favorites %}
+                                    <a data-id="{{ product.id }}" class="add-favourite"><i class="fa fa-heart"></i> add to wishlist</a>
+                                  {% else %}
+                                    <a data-id="{{ product.id }}" class="add-favourite"><i class="fa fa-heart"></i> Delete from Favourites</a>
+                                  {% endif %}
                             </div>
                             <div class="product__details__last__option">
                                 <h5><span>Guaranteed Safe Checkout</span></h5>

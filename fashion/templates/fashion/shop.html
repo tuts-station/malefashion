@@ -164,7 +164,8 @@
                                         <div class="product__item__pic set-bg" data-setbg="{{product.product_image.url}}">
                                             <span class="label">{{ product.label }}</span>
                                             <ul class="product__hover">
-                                                <li><a data-id={{product.id}} class="add-favourite fill-color"><img class="white-heart" src="{% static 'fashion/img/icon/heart.png' %}" alt="" data-img="{% static 'fashion/img/icon/red-heart-7-removebg-preview.png' %}"></a></li>
+                                                <li><a data-id="{{ product.id }}" class="forgot-link shop-add-to-fav"><i class="fa fa-heart white-heart"></i></a></li>
+                                                </li>
                                             </ul>
                                         </div>
                                         <div class="product__item__text">

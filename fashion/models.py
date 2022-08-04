@@ -70,3 +70,18 @@ class Cart(models.Model):
 class FavouriteProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ManyToManyField(Product)
+
+class Customer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    country = models.CharField(max_length=200)
+    address = models.TextField()
+    city = models.CharField(max_length=50)
+    zipcode = models.IntegerField()
+    state = models.CharField(max_length=50)
+    email = models.EmailField(max_length=100)
+    phone = models.IntegerField()
+
+    def __str__(self): 
+        return str(self.id)

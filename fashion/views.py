@@ -35,6 +35,15 @@ def shop(request):
     shipping_amount = 70.0
     totalamount = 0
     products = Product.objects.all()
+
+    # Favourites,_ = FavouriteProduct.objects.get_or_create(user=request.user)
+
+    # product_in_favorites = None
+    # if products in Favourites.product.all():
+    #     product_in_favorites = True
+    # else:
+    #     product_in_favorites = False
+
     catagories = Catagory.objects.all()
     cart_product = [p for p in Cart.objects.all() if p.user == request.user]
     if cart_product:
@@ -47,8 +56,10 @@ def shop(request):
 def contact(request):
     return render(request, 'fashion/contact.html')
 
-@login_required()
+# @login_required()
 def add_to_cart(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     user = request.user
     item_already_in_cart1 = False
     product = request.GET.get('prod_id')
@@ -56,13 +67,14 @@ def add_to_cart(request):
     if item_already_in_cart1 == False:
         product_title = Product.objects.get(id=product)
         Cart(user=user, product=product_title).save()
-        # messages.success(request, 'Product Added to Cart Successfully !!' )
         return redirect('/cart')
     else:
         return redirect('/cart')
 
-@login_required
+# @login_required
 def cart(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     totalitem = 0
     if request.user.is_authenticated:
         totalitem = len(Cart.objects.filter(user=request.user))
@@ -165,14 +177,28 @@ def Favorites(request, id):
 
     product = Product.objects.get(id=id)
 
+    print('if')
     if product not in Favourites.product.all():
         Favourites.product.add(product)
+        data = {
+            'product':True
+        }
+        return JsonResponse(data)
     else:
+        print('else')
         Favourites.product.remove(product)
     
     Favourites.save()
-    
+    # messages.success(request, 'Product Add to Favourite Successfully!')
     return HttpResponse('Success')
+
+def favoritesPage(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    user = request.user
+    FavProducts,_ = FavouriteProduct.objects.get_or_create(user=user)
+    # print(FavProducts.product.all())
+    return render(request, 'fashion/favourites.html', { 'product_list': FavProducts.product.all(), "favorites": True})
 
 def checkout(request):
     return render(request, 'fashion/checkout.html')
@@ -181,11 +207,21 @@ class productDetails(View):
     def get(self, request, pk):
         totalitem = 0
         product = Product.objects.get(pk=pk)
+
+        Favourites,_ = FavouriteProduct.objects.get_or_create(user=request.user)
+
+        product_in_favorites = None
+        if product in Favourites.product.all():
+            product_in_favorites = True
+        else:
+            product_in_favorites = False
+
         item_already_in_cart=False
+
         if request.user.is_authenticated:
             totalitem = len(Cart.objects.filter(user=request.user))
             item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
-        return render(request, 'fashion/proDetails.html', {'product':product,'totalitem':totalitem})
+        return render(request, 'fashion/proDetails.html', {'product':product,'totalitem':totalitem,'product_in_favorites':product_in_favorites})
 
 def userProfile(request):
     return render(request, 'fashion/userProfile.html')
