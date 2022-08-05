@@ -53,7 +53,7 @@
                                 <span> - 5 Reviews</span>
                             </div>
                             <h3>${{ product.original_price }} <span>${{ product.discounted_price }}</span></h3>
-                            <p>{{ product.desc }}</p>
+                            <p>{{ product.desc|safe }}</p>
                             <div class="product__details__option">
                                 {% if product.category.name != 'Bags' %}
                                     <div class="product__details__option__size">
@@ -160,144 +160,25 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'fashion/img/product/product-1.jpg' %}">
-                            <span class="label">New</span>
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/heart.png' %}" alt=""></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/search.png' %}" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Piqué Biker Jacket</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
+                {% for rel_product in products %}
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                        <div class="product__item sale">
+                            <div class="product__item__pic set-bg" data-setbg="{{ rel_product.product_image.url }}">
+                                <span class="label">{{ rel_product.label }}</span>
+                                <ul class="product__hover">
+                                    <li>
+                                        <a data-id="{{ rel_product.id }}" class="forgot-link"><i class="fa fa-heart white-heart"></i></a>
+                                    </li>
+                                </ul>
                             </div>
-                            <h5>$67.24</h5>
-                            <div class="product__color__select">
-                                <label for="pc-1">
-                                    <input type="radio" id="pc-1">
-                                </label>
-                                <label class="active black" for="pc-2">
-                                    <input type="radio" id="pc-2">
-                                </label>
-                                <label class="grey" for="pc-3">
-                                    <input type="radio" id="pc-3">
-                                </label>
+                            <div class="product__item__text">
+                                <h6 class="pb-2"><small>{{ rel_product.brand.name }}</small></h6>
+                                <h6><a href="{% url 'productDetails' rel_product.id %}" class="forgot-link">{{ rel_product.name }}</a></h6>
+                                <h5 class="pt-2">${{ rel_product.original_price }}</h5>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'fashion/img/product/product-2.jpg' %}">
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/heart.png' %}" alt=""></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/search.png' %}" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Piqué Biker Jacket</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$67.24</h5>
-                            <div class="product__color__select">
-                                <label for="pc-4">
-                                    <input type="radio" id="pc-4">
-                                </label>
-                                <label class="active black" for="pc-5">
-                                    <input type="radio" id="pc-5">
-                                </label>
-                                <label class="grey" for="pc-6">
-                                    <input type="radio" id="pc-6">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item sale">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'fashion/img/product/product-3.jpg' %}">
-                            <span class="label">Sale</span>
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/heart.png' %}" alt=""></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/search.png' %}" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Multi-pocket Chest Bag</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$43.48</h5>
-                            <div class="product__color__select">
-                                <label for="pc-7">
-                                    <input type="radio" id="pc-7">
-                                </label>
-                                <label class="active black" for="pc-8">
-                                    <input type="radio" id="pc-8">
-                                </label>
-                                <label class="grey" for="pc-9">
-                                    <input type="radio" id="pc-9">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'fashion/img/product/product-4.jpg' %}">
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/heart.png' %}" alt=""></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{% static 'fashion/img/icon/search.png' %}" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Diagonal Textured Cap</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$60.9</h5>
-                            <div class="product__color__select">
-                                <label for="pc-10">
-                                    <input type="radio" id="pc-10">
-                                </label>
-                                <label class="active black" for="pc-11">
-                                    <input type="radio" id="pc-11">
-                                </label>
-                                <label class="grey" for="pc-12">
-                                    <input type="radio" id="pc-12">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>

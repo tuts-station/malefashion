@@ -58,6 +58,8 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.id)
@@ -65,7 +67,7 @@ class Cart(models.Model):
     # Below Property will be used by checkout.html page to show total cost in order summary
     @property
     def total_cost(self):
-        return self.quantity * self.product.discounted_price
+        return self.quantity * self.product.original_price
 
 class FavouriteProduct(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -103,8 +105,10 @@ class OrderPlaced(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     ordered_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50,choices=STATUS_CHOICES,default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
   # Below Property will be used by orders.html page to show total cost
     @property
     def total_cost(self):
-        return self.quantity * self.product.discounted_price
+        return self.quantity * self.product.original_price

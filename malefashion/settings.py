@@ -147,3 +147,11 @@ EMAIL_HOST_PASSWORD = 'tbeotvtwskesciui'
 SUMMERNOTE_THEME = 'bs4'
 LOGIN_URL = '/login'
 # LOGOUT_URL = '/'
+
+if DEBUG:
+    STRIPE_PUBLISHABLE_KEY = 'pk_test_51JAATQSEQXiFJB97DgErcg6WsKdFiUrf2Vg9ciIcCpWtqNuSvq2cLAlP3XQPvYglIgfyempJXAkZgcI3B3tKMeCo00O21c1KG9'
+    STRIPE_SECRET_KEY = 'sk_test_51JAATQSEQXiFJB97Upaiioor7WB1RtwNMz3rzQcNAh2q6QghO1dSHg4lSFlm9PmCa49108yrq8NZHiSGVU9ViGgM00oqKglu0K'
+# Uncomment these lines if you have a live keys
+# else:
+#     STRIPE_PUBLISHABLE_KEY = 'production_publishable_key'
+#     STRIPE_SECRET_KEY = 'production_secret_key'

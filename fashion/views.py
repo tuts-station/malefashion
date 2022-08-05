@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django import template
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.template import loader
 from django.urls import reverse
 from django.db import IntegrityError
@@ -18,13 +18,21 @@ from .models import Slider, Product,Catagory, Cart, FavouriteProduct, Customer
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView,TemplateView
+from django.conf import settings
+# from django.views.decorators.csrf import csrf_exempt
+# import json
+# import stripe
 
 # Create your views here.
 
 class ProductView(View):
     def get(self, request):
         sliders = Slider.objects.all()
-        return render(request, 'fashion/home.html',{ 'sliders': sliders })
+        products_trending = Product.objects.filter(trending=1)[0]
+        products_seller = Product.objects.filter(label='Best Seller')
+        products_new = Product.objects.filter(label='New')
+        products_sale = Product.objects.filter(label='Sale')
+        return render(request, 'fashion/home.html',{ 'sliders': sliders,'products_seller':products_seller,'products_new':products_new,'products_sale':products_sale,'products_trending':products_trending })
 
 def about(request):
     return render(request, 'fashion/about.html')    
@@ -75,7 +83,7 @@ def cart(request):
         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
         if cart_product:
             for p in cart_product:
-                tempamount = (p.quantity * p.product.discounted_price)
+                tempamount = (p.quantity * p.product.original_price)
                 amount += tempamount
             totalamount = amount+shipping_amount
             return render(request, 'fashion/cart.html', {'carts':cart, 'amount':amount, 'totalamount':totalamount, 'totalitem':totalitem})
@@ -114,9 +122,10 @@ def plus_cart(request):
         shipping_amount= 70.0
         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
         for p in cart_product:
-            tempamount = (p.quantity * p.product.discounted_price)
+            tempamount = (p.quantity * p.product.original_price)
             amount += tempamount
         data = {
+            'prod_id':prod_id,
             'quantity':c.quantity,
             'amount':amount,
             'totalamount':amount+shipping_amount
@@ -135,9 +144,10 @@ def minus_cart(request):
         shipping_amount= 70.0
         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
         for p in cart_product:
-            tempamount = (p.quantity * p.product.discounted_price)
+            tempamount = (p.quantity * p.product.original_price)
             amount += tempamount
         data = {
+            'prod_id':prod_id,
             'quantity':c.quantity,
             'amount':amount,
             'totalamount':amount+shipping_amount
@@ -187,7 +197,7 @@ def checkout(request):
     cart_product = [p for p in Cart.objects.all() if p.user == request.user]
     if cart_product:
         for p in cart_product:
-            tempamount = (p.quantity * p.product.discounted_price)
+            tempamount = (p.quantity * p.product.original_price)
             amount += tempamount
         totalamount = amount+shipping_amount
     return render(request, 'fashion/checkout.html', {'add':add, 'cart_items':cart_items, 'totalcost':totalamount})
@@ -196,9 +206,7 @@ class productDetails(View):
     def get(self, request, pk):
         totalitem = 0
         product = Product.objects.get(pk=pk)
-
-        # if not request.user.is_authenticated:
-        #     return redirect('login')
+        products = Product.objects.filter(category_id=product.category_id)
         Favourites,_ = FavouriteProduct.objects.get_or_create(user=request.user)
 
         product_in_favorites = None
@@ -212,7 +220,7 @@ class productDetails(View):
         if request.user.is_authenticated:
             totalitem = len(Cart.objects.filter(user=request.user))
             item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
-        return render(request, 'fashion/proDetails.html', {'product':product,'totalitem':totalitem,'product_in_favorites':product_in_favorites,'item_already_in_cart':item_already_in_cart})
+        return render(request, 'fashion/proDetails.html', {'product':product,'totalitem':totalitem,'product_in_favorites':product_in_favorites,'item_already_in_cart':item_already_in_cart,'products':products})
 
 class CustomerView(View):
     def get(self, request):

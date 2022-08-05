@@ -39,26 +39,26 @@
                             <tbody>
                                 {% if carts %}
                                     {% for cart in carts %}
-                                        <tr class="main-tr">
+                                        <tr class="main-tr-{{ cart.product.id }}">
                                             <td class="product__cart__item">
                                                 <div class="product__cart__item__pic">
                                                     <img src="{{ cart.product.product_image.url }}" alt="{{ cart.product.product_image.url }}" height="90" width="90">
                                                 </div>
                                                 <div class="product__cart__item__text">
                                                     <h6>{{ cart.product.name }}</h6>
-                                                    <h5>${{ cart.product.discounted_price }}</h5>
+                                                    <h5>${{ cart.product.original_price }}</h5>
                                                 </div>
                                             </td>
                                             <td class="quantity__item">
                                                 <div class="quantity">
                                                     <div class="pro-qty-2">
                                                         <a class="forgot-link minus-cart" pid="{{cart.product.id}}"><i class="fa fa-angle-left dec"></i></a>
-                                                        <input type="text" class="quantity-val" value="{{cart.quantity}}">
+                                                        <input type="text" class="quantity-val-{{ cart.product.id }}" value="{{cart.quantity}}">
                                                         <a class="forgot-link plus-cart" pid="{{cart.product.id}}"><i class="fa fa-angle-right inc"></i></a>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="cart__price">${{ cart.product.discounted_price }}</td>
+                                            <td class="cart__price">${{ cart.product.original_price }}</td>
                                             <td class="cart__close"><a class="remove-cart" pid={{cart.product.id}}><i class="fa fa-close"></i></a></td>
                                         </tr>
                                     {% endfor %}
